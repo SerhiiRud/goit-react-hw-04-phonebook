@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import initialContacts from '../contacts.json';
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout/Layout';
@@ -10,16 +10,28 @@ export const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
-  componentDidMount() {
+  useEffect(() => {
     const savedContacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(savedContacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+    if (parsedContacts.length > 0) {
+      setContacts(parsedContacts);
     } else {
-      this.setState({ contacts: initialContacts });
+      setContacts(initialContacts);
     }
-  }
-
+  }, []);
+  // componentDidMount() {
+  //   const savedContacts = localStorage.getItem('contacts');
+  //   const parsedContacts = JSON.parse(savedContacts);
+  //   if (parsedContacts) {
+  //     this.setState({ contacts: parsedContacts });
+  //   } else {
+  //     this.setState({ contacts: initialContacts });
+  //   }
+  // }
+  //
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
   // componentDidUpdate(prevProps, prevState) {
   //   const nextContacts = this.state.contacts;
   //   const prevContacts = prevState.contacts;
@@ -40,9 +52,7 @@ export const App = () => {
       return alert(`${newContact.name} is already in contacts`);
     }
 
-    setContacts(prevState => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
+    setContacts([...contacts, newContact]);
   };
 
   const onInput = event => {
