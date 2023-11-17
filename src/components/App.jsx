@@ -13,33 +13,17 @@ export const App = () => {
   useEffect(() => {
     const savedContacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(savedContacts);
-    if (parsedContacts.length > 0) {
-      setContacts(parsedContacts);
-    } else {
+    if (parsedContacts.length === 0) {
       setContacts(initialContacts);
+    } else {
+      setContacts(parsedContacts);
     }
   }, []);
-  // componentDidMount() {
-  //   const savedContacts = localStorage.getItem('contacts');
-  //   const parsedContacts = JSON.parse(savedContacts);
-  //   if (parsedContacts) {
-  //     this.setState({ contacts: parsedContacts });
-  //   } else {
-  //     this.setState({ contacts: initialContacts });
-  //   }
-  // }
-  //
+
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
+    console.log(1);
   }, [contacts]);
-  // componentDidUpdate(prevProps, prevState) {
-  //   const nextContacts = this.state.contacts;
-  //   const prevContacts = prevState.contacts;
-
-  //   if (nextContacts !== prevContacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(nextContacts));
-  //   }
-  // }
 
   const addContact = newContact => {
     if (
@@ -51,7 +35,6 @@ export const App = () => {
     ) {
       return alert(`${newContact.name} is already in contacts`);
     }
-
     setContacts([...contacts, newContact]);
   };
 
