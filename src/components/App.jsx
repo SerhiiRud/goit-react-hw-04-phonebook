@@ -6,23 +6,21 @@ import { ContactForm } from './Phonebook/Phonebook';
 import { ContactList } from './Contacts/Contacts';
 import { Filter } from './Filter/Filter';
 
+const getInitialContacts = () => {
+  const savedContacts = localStorage.getItem('contacts');
+  if (savedContacts !== null) {
+    return JSON.parse(savedContacts);
+  } else {
+    return initialContacts;
+  }
+};
+
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(getInitialContacts);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const savedContacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(savedContacts);
-    if (parsedContacts.length === 0) {
-      setContacts(initialContacts);
-    } else {
-      setContacts(parsedContacts);
-    }
-  }, []);
-
-  useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
-    console.log(1);
   }, [contacts]);
 
   const addContact = newContact => {
